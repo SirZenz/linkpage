@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pig Hunting Story Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            display: none;
+            text-align: center;
+        }
+        .result-details {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Pig Hunting Story Quiz</h1>
+        <div class="quiz" id="quiz">
+            <div class="question" id="question"></div>
+            <ul class="options" id="options"></ul>
+            <button id="nextBtn">Next</button>
+        </div>
+        <div class="result" id="result">
+            <h2>Your Results</h2>
+            <p id="score"></p>
+            <div class="result-details" id="resultDetails"></div>
+            <button id="retryBtn">Retry</button>
+        </div>
+    </div>
+
+    <script>
+const quizData = [
+    {
+        question: "What event prompts the narrator to consider hunting a pig?",
+        options: ["The pig attacks their dog, Polly.", "They find evidence of a pig digging near their guava tree.", "The pig destroys their vegetable garden.", "They hear a rumor about a wild pig in the area."],
+        answer: 1
+    },
+    {
+        question: "What does the narrator find disturbing about pig hunting?",
+        options: ["The use of guns.", "The risk of injury.", "The physicality and brutality of stabbing the pig.", "The presence of wild dogs."],
+        answer: 2
+    },
+    {
+        question: "How does the narrator feel about Paul's absence?",
+        options: ["Relieved that she has more freedom.", "Ambivalent, but resigned to managing alone.", "Confident and self-assured.", "Indifferent and unconcerned."],
+        answer: 1
+    },
+    {
+        question: "What do the glow-worms symbolize in the story?",
+        options: ["Hidden dangers and secrets.", "The beauty of the natural world.", "Hope and renewal.", "The presence of a taniwha."],
+        answer: 0
+    },
+    {
+        question: "Why did the family move to the countryside?",
+        options: ["To get closer to family.", "To live a more sustainable and simple life.", "For Paul's new job opportunity.", "Because their city home was destroyed."],
+        answer: 1
+    },
+    {
+        question: "What symbolizes the disruption and challenges in the narrator’s life?",
+        options: ["The glow-worms.", "The pig.", "The guava tree.", "The dog, Polly."],
+        answer: 1
+    },
+    {
+        question: "Which character initially discovers the ruck marks under the guava tree?",
+        options: ["Bo", "Lucy", "Paul", "The narrator"],
+        answer: 1
+    },
+    {
+        question: "What is the significance of bread-making in the story?",
+        options: ["It shows the narrator's culinary skills.", "It symbolizes domestic routine and stability.", "It represents Paul's absence.", "It is a metaphor for the wilderness."],
+        answer: 1
+    },
+    {
+        question: "What causes tension between the narrator and Paul?",
+        options: ["Paul's affair with Lydia.", "Their decision to move to the countryside.", "Their financial difficulties.", "The presence of the wild pig."],
+        answer: 0
+    },
+    {
+        question: "What type of bird do Bo and his family hope to see during their nighttime walk?",
+        options: ["Kiwi", "Ruru", "Kea", "Tui"],
+        answer: 0
+    },
+    {
+        question: "How do the children react to their father's absence?",
+        options: ["They are anxious and constantly ask about him.", "They seem indifferent and carry on with their daily activities.", "They are excited to have more freedom.", "They express anger towards their mother."],
+        answer: 0
+    },
+    {
+        question: "What is the role of the guava tree in the story?",
+        options: ["It is where Paul hides from the narrator.", "It is the site where the pig's ruck marks are found.", "It symbolizes growth and new beginnings.", "It provides food for the family."],
+        answer: 1
+    },
+    {
+        question: "Why does the narrator ultimately decide to hunt the pig herself?",
+        options: ["To prove her independence.", "To protect her children and their property.", "Because Paul specifically asked her to do it.", "For the thrill of the hunt."],
+        answer: 1
+    },
+    {
+        question: "What does the house represent in the story?",
+        options: ["Security and stability.", "The challenges of rural life.", "The narrator's sense of entrapment and isolation.", "A place of joy and harmony."],
+        answer: 2
+    },
+    {
+        question: "Which character is described as restless, always seeking new experiences?",
+        options: ["Bo", "Lucy", "Paul", "The narrator"],
+        answer: 2
+    },
+    {
+        question: "What literary technique is used in the phrase, 'the darkness spills out here, lying in wait for the sun'?",
+        options: ["Metaphor", "Simile", "Personification", "Alliteration"],
+        answer: 2
+    },
+    {
+        question: "What does the narrator overhear about Paul at the Four Square?",
+        options: ["He got a new job in the city.", "He ran off with another woman, Lydia.", "He is building a new house nearby.", "He is planning to return soon with supplies."],
+        answer: 1
+    },
+    {
+        question: "What emotion does the narrator feel when she sees the shape in the garden at the end?",
+        options: ["Relief.", "Joy.", "Fear and determination.", "Confusion."],
+        answer: 2
+    },
+    {
+        question: "What does Polly, the family dog, represent in the story?",
+        options: ["Loyalty to Paul.", "A reminder of city life.", "A connection to the narrator’s emotional state.", "Fear of the wilderness."],
+        answer: 2
+    },
+    {
+        question: "What is the relationship between the narrator and Lydia?",
+        options: ["Lydia is a close friend.", "Lydia is a teacher at the children's school.", "Lydia is the woman Paul may have left the family for.", "Lydia is the narrator's sister."],
+        answer: 2
+    },
+    {
+        question: "What is the significance of the glow-worm scene in the story?",
+        options: ["It symbolizes the beauty of nature.", "It marks a turning point in the narrator's understanding of her surroundings.", "It shows the narrator's children are afraid of the dark.", "It is where Paul proposes to the narrator."],
+        answer: 1
+    },
+    {
+        question: "What does the narrator do after hearing gossip at the Four Square?",
+        options: ["She confronts Lydia.", "She decides to leave the countryside.", "She buys a bottle of wine.", "She tells her children the truth about Paul."],
+        answer: 2
+    },
+    {
+        question: "What does the act of bread-making represent for the narrator?",
+        options: ["A desire for control and normalcy.", "A hobby she picked up in the city.", "A new skill she is learning.", "A connection to her past life."],
+        answer: 0
+    },
+    {
+        question: "Why does the narrator feel conflicted about living in the countryside?",
+        options: ["She loves the city more.", "She misses her family.", "She struggles with the isolation and hardships.", "She is afraid of animals."],
+        answer: 2
+    },
+    {
+        question: "What does the narrator compare the pig's tusks to?",
+        options: ["A crescent moon.", "A dropped segment of moon.", "The blade of a knife.", "A boomerang."],
+        answer: 1
+    },
+];
+
+
+        // Shuffle function to randomize questions or options
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Shuffle quiz data on page load
+        shuffle(quizData);
+
+        // Shuffle options for each question
+        quizData.forEach(question => {
+            const correctAnswer = question.options[question.answer];
+            shuffle(question.options);
+            question.answer = question.options.indexOf(correctAnswer); // Update the answer index after shuffling
+        });
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const userAnswers = [];
+
+        function loadQuestion() {
+            const currentQuestion = quizData[currentQuestionIndex];
+            document.getElementById('question').innerText = `Question ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+            const optionsList = document.getElementById('options');
+            optionsList.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                optionsList.innerHTML += `<li><input type="radio" name="option" value="${index}">${option}</li>`;
+            });
+        }
+
+        function showResult() {
+            document.getElementById('quiz').style.display = 'none';
+            const percentage = (score / quizData.length) * 100;
+            document.getElementById('score').innerText = `You scored ${score} out of ${quizData.length} (${percentage.toFixed(2)}%)`;
+
+            const resultDetails = document.getElementById('resultDetails');
+            resultDetails.innerHTML = ''; // Clear previous results
+            quizData.forEach((question, index) => {
+                const isCorrect = userAnswers[index] === question.answer;
+                const resultClass = isCorrect ? "correct" : "incorrect";
+                resultDetails.innerHTML += `<p>${index + 1}. ${question.question}<br>
+                    <span class="${resultClass}">Your answer: ${question.options[userAnswers[index]]} - ${isCorrect ? "Correct" : "Wrong"}</span><br>
+                    Correct answer: ${question.options[question.answer]}</p>`;
+            });
+
+            document.getElementById('result').style.display = 'block';
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption) {
+                const answer = parseInt(selectedOption.value);
+                userAnswers.push(answer);
+                if (answer === quizData[currentQuestionIndex].answer) {
+                    score++;
+                }
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizData.length) {
+                    loadQuestion();
+                } else {
+                    showResult();
+                }
+            } else {
+                alert('Please select an option!');
+            }
+        });
+
+        document.getElementById('retryBtn').addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers.length = 0; // Clear previous answers
+            shuffle(quizData); // Shuffle the questions again for retry
+            quizData.forEach(question => {
+                const correctAnswer = question.options[question.answer];
+                shuffle(question.options);
+                question.answer = question.options.indexOf(correctAnswer); // Update the answer index after shuffling
+            });
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            loadQuestion();
+        });
+
+        loadQuestion();
+    </script>
+</body>
+</html>

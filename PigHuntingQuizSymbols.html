@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pig Hunting Symbol Etc Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            display: none;
+            text-align: center;
+        }
+        .result-details {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Pig Hunting Symbol Etc Quiz</h1>
+        <div class="quiz" id="quiz">
+            <div class="question" id="question"></div>
+            <ul class="options" id="options"></ul>
+            <button id="nextBtn">Next</button>
+        </div>
+        <div class="result" id="result">
+            <h2>Your Results</h2>
+            <p id="score"></p>
+            <div class="result-details" id="resultDetails"></div>
+            <button id="retryBtn">Retry</button>
+        </div>
+    </div>
+
+    <script>
+const quizData = [
+    // Symbols
+    {
+        question: "What does the pig symbolize in the story?",
+        options: ["The narrator's fear and challenges.", "Hope and renewal.", "The arrival of spring.", "Paul's love for the family."],
+        answer: 0
+    },
+    {
+        question: "What do the glow-worms symbolize in the story?",
+        options: ["Hope and renewal.", "Hidden beauty and danger.", "Peace and tranquility.", "Guidance in the dark."],
+        answer: 1
+    },
+    {
+        question: "What does the guava tree represent in the narrative?",
+        options: ["Growth and prosperity.", "The connection to the city life.", "The intrusion of the wild into the domestic space.", "A childhood memory."],
+        answer: 2
+    },
+    {
+        question: "What does bread-making symbolize for the narrator?",
+        options: ["A sense of control and routine amidst chaos.", "Her desire to leave the countryside.", "Her connection to Paul.", "A creative outlet."],
+        answer: 0
+    },
+    {
+        question: "What does the house symbolize in the story?",
+        options: ["A place of confinement and isolation.", "A sense of freedom.", "A return to the narrator's childhood.", "A temporary residence."],
+        answer: 0
+    },
+
+    // Themes
+    {
+        question: "Which theme is explored through the narrator's struggle with hunting the pig?",
+        options: ["Justice and revenge.", "Isolation and survival.", "Friendship and loyalty.", "Fantasy and imagination."],
+        answer: 1
+    },
+    {
+        question: "What theme is highlighted by the family's move to the countryside?",
+        options: ["Hope and renewal.", "The conflict between idealism and reality.", "Adventure and exploration.", "Urban vs. rural conflict."],
+        answer: 1
+    },
+    {
+        question: "Which theme does Paul's character represent in the story?",
+        options: ["Change and adaptability.", "Fear and uncertainty.", "Loyalty and stability.", "Kindness and generosity."],
+        answer: 0
+    },
+    {
+        question: "Which theme is symbolized by the glow-worms?",
+        options: ["The deceptive nature of appearances.", "Hope and light in darkness.", "The natural beauty of the countryside.", "The need for companionship."],
+        answer: 0
+    },
+    {
+        question: "What is a major theme in the story related to the narrator’s internal conflict?",
+        options: ["Revenge and hatred.", "Freedom and entrapment.", "Love and betrayal.", "Adaptation to changing circumstances."],
+        answer: 3
+    },
+
+    // Settings
+    {
+        question: "Where is the story primarily set?",
+        options: ["A busy urban city.", "A remote rural countryside.", "A seaside village.", "A mountain cabin."],
+        answer: 1
+    },
+    {
+        question: "What does the remote countryside setting contribute to the story?",
+        options: ["A sense of adventure.", "A feeling of isolation and challenge.", "A place for social gatherings.", "A peaceful haven."],
+        answer: 1
+    },
+    {
+        question: "What is significant about the natural environment surrounding the family home?",
+        options: ["It is filled with friendly neighbors.", "It is portrayed as both beautiful and threatening.", "It is the only source of food.", "It is a magical place."],
+        answer: 1
+    },
+    {
+        question: "What role does the house setting play in the story?",
+        options: ["A sanctuary from the outside world.", "A representation of the narrator’s fears.", "A symbol of past memories.", "A symbol of entrapment and the harsh realities of rural life."],
+        answer: 3
+    },
+
+    // Characters
+    {
+        question: "Who is Paul in the story?",
+        options: ["The narrator's son.", "The narrator's husband who left the family.", "The neighbor who helps with the pig.", "The local shopkeeper."],
+        answer: 1
+    },
+    {
+        question: "What trait best describes the narrator?",
+        options: ["Indecisive and timid.", "Resourceful and determined.", "Confident and outgoing.", "Carefree and reckless."],
+        answer: 1
+    },
+    {
+        question: "Who are Bo and Lucy in the story?",
+        options: ["The narrator's friends.", "The narrator's children.", "Paul's siblings.", "Local farmers."],
+        answer: 1
+    },
+    {
+        question: "How is Lydia connected to the family?",
+        options: ["She is Paul's coworker.", "She is the woman Paul left the family for.", "She is the narrator's sister.", "She is a distant relative."],
+        answer: 1
+    },
+    {
+        question: "What role does Polly, the dog, play in the story?",
+        options: ["A symbol of loyalty and routine.", "A threat to the narrator.", "A tool for hunting pigs.", "A connection to Lydia."],
+        answer: 0
+    },
+
+    // Key Events
+    {
+        question: "What event first prompts the narrator to consider hunting the pig?",
+        options: ["The pig attacks their dog.", "They find ruck marks under the guava tree.", "The pig destroys the vegetable garden.", "Paul asks her to hunt the pig."],
+        answer: 1
+    },
+    {
+        question: "What key event reveals Paul's betrayal?",
+        options: ["Paul leaves the house abruptly.", "The narrator overhears gossip at the Four Square.", "The pig is found in their garden.", "Paul confesses his love for Lydia."],
+        answer: 1
+    },
+    {
+        question: "How does the narrator respond to the wild pig in the end?",
+        options: ["She calls a local hunter.", "She decides to move back to the city.", "She uses Paul's rifle to hunt the pig.", "She traps the pig in a cage."],
+        answer: 2
+    },
+    {
+        question: "What significant event occurs during the family's glow-worm walk?",
+        options: ["They spot a kiwi bird.", "Paul decides to return to the city.", "The children express their fear of the dark.", "They discover the glow-worms and forget about hunting kiwi."],
+        answer: 3
+    },
+
+    // Author's Purpose
+    {
+        question: "What is the author's purpose in 'Pig Hunting'?",
+        options: ["To explore the complexities of human emotions when faced with change and isolation.", "To teach readers how to hunt pigs in rural areas.", "To entertain with a humorous story about country life.", "To promote rural living over city life."],
+        answer: 0
+    },
+    {
+        question: "Why does the author use vivid descriptions of the natural environment?",
+        options: ["To create a sense of beauty and peace.", "To highlight the challenges and unpredictability of rural life.", "To portray the city as an undesirable place.", "To encourage readers to become naturalists."],
+        answer: 1
+    },
+    {
+        question: "What might the author be suggesting about idealism vs. reality?",
+        options: ["Idealism always leads to happiness.", "Reality often clashes with idealistic views.", "Idealism is the best approach to life.", "Reality is unimportant."],
+        answer: 1
+    },
+
+    // Language Features
+    {
+        question: "What literary technique is used in the phrase 'the darkness spills out here, lying in wait for the sun'?",
+        options: ["Metaphor", "Personification", "Alliteration", "Hyperbole"],
+        answer: 1
+    },
+    {
+        question: "Which language feature is prominent in the description of the pig's tusks 'like a dropped segment of moon'?",
+        options: ["Metaphor", "Onomatopoeia", "Simile", "Irony"],
+        answer: 2
+    },
+    {
+        question: "What is the effect of using sensory imagery throughout the story?",
+        options: ["It makes the reader feel distant from the events.", "It brings the setting and characters to life and engages the reader's senses.", "It distracts from the main plot.", "It simplifies the story for young readers."],
+        answer: 1
+    },
+    {
+        question: "Why does the author use repetition in the story?",
+        options: ["To emphasize the narrator's routine and struggles.", "To confuse the reader.", "To highlight the beauty of the countryside.", "To create a humorous tone."],
+        answer: 0
+    }
+];
+
+
+
+        // Shuffle function to randomize questions or options
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Shuffle quiz data on page load
+        shuffle(quizData);
+
+        // Shuffle options for each question
+        quizData.forEach(question => {
+            const correctAnswer = question.options[question.answer];
+            shuffle(question.options);
+            question.answer = question.options.indexOf(correctAnswer); // Update the answer index after shuffling
+        });
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const userAnswers = [];
+
+        function loadQuestion() {
+            const currentQuestion = quizData[currentQuestionIndex];
+            document.getElementById('question').innerText = `Question ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+            const optionsList = document.getElementById('options');
+            optionsList.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                optionsList.innerHTML += `<li><input type="radio" name="option" value="${index}">${option}</li>`;
+            });
+        }
+
+        function showResult() {
+            document.getElementById('quiz').style.display = 'none';
+            const percentage = (score / quizData.length) * 100;
+            document.getElementById('score').innerText = `You scored ${score} out of ${quizData.length} (${percentage.toFixed(2)}%)`;
+
+            const resultDetails = document.getElementById('resultDetails');
+            resultDetails.innerHTML = ''; // Clear previous results
+            quizData.forEach((question, index) => {
+                const isCorrect = userAnswers[index] === question.answer;
+                const resultClass = isCorrect ? "correct" : "incorrect";
+                resultDetails.innerHTML += `<p>${index + 1}. ${question.question}<br>
+                    <span class="${resultClass}">Your answer: ${question.options[userAnswers[index]]} - ${isCorrect ? "Correct" : "Wrong"}</span><br>
+                    Correct answer: ${question.options[question.answer]}</p>`;
+            });
+
+            document.getElementById('result').style.display = 'block';
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption) {
+                const answer = parseInt(selectedOption.value);
+                userAnswers.push(answer);
+                if (answer === quizData[currentQuestionIndex].answer) {
+                    score++;
+                }
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizData.length) {
+                    loadQuestion();
+                } else {
+                    showResult();
+                }
+            } else {
+                alert('Please select an option!');
+            }
+        });
+
+        document.getElementById('retryBtn').addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers.length = 0; // Clear previous answers
+            shuffle(quizData); // Shuffle the questions again for retry
+            quizData.forEach(question => {
+                const correctAnswer = question.options[question.answer];
+                shuffle(question.options);
+                question.answer = question.options.indexOf(correctAnswer); // Update the answer index after shuffling
+            });
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            loadQuestion();
+        });
+
+        loadQuestion();
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Pig Hunting Study!</title>
+    <title>Pig Hunting Story</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -21,26 +21,13 @@
             padding: 20px;
             border-radius: 8px;
         }
-        .description {
+        .story {
             text-align: center;
             margin-bottom: 30px;
             font-size: 1.1em;
-        }
-        .steps {
-            list-style-type: none;
-            padding: 0;
-        }
-        .steps li {
-            background: #2c2c2c; /* Darker step background */
-            margin: 10px 0;
-            padding: 15px;
+            padding: 20px;
+            background: #2c2c2c; /* Darker background for story */
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-        }
-        .steps li i {
-            margin-right: 10px;
-            color: #4caf50; /* Green icons */
         }
         .sidebar {
             float: left;
@@ -65,6 +52,11 @@
             float: left;
             width: 75%;
         }
+		        iframe {
+            width: 100%;
+            height: 800px; /* Increased height for better visibility */
+            border: none;
+        }
         footer {
             clear: both;
             text-align: center;
@@ -85,32 +77,22 @@
 <body>
 
 <header>
-    <h1>Welcome to Pig Hunting Study!</h1>
+    <h1>Pig Hunting Story</h1>
 </header>
 
 <div class="sidebar">
-    <button onclick="window.open('PigHuntingGeneralQuiz.html', '_blank')"><i class="fas fa-arrow-right"></i>Link to Pig Hunting General Quiz</button>
-    <button onclick="window.open('PigHuntingQuizSymbols.html', '_blank')"><i class="fas fa-arrow-right"></i>Link to Pig Hunting Symbol Etc Quiz</button>
-	<button onclick="window.open('PigHuntingLanguageQuiz.html', '_blank')"><i class="fas fa-arrow-right"></i>Link to Pig Hunting Language Features Quiz</button>
-    <button onclick="window.open('Story.html', '_blank')"><i class="fas fa-arrow-right"></i>Link to Pig Hunting Full Story</button>
-    <button onclick="window.open('characters.html', '_blank')"><i class="fas fa-arrow-right"></i>Link to Pig Hunting Characters</button>
-    <button onclick="window.open('etc.html', '_blank')"><i class="fas fa-arrow-right"></i>Link to Pig Hunting Etc</button>
+    <button onclick="location.href='index.html'"><i class="fas fa-arrow-left"></i>Back to Home</button>
+    <button onclick="location.href='PigHuntingGeneralQuiz.html'"><i class="fas fa-arrow-right"></i>Link to Pig Hunting General Quiz</button>
+    <button onclick="location.href='PigHuntingQuizSymbols.html'"><i class="fas fa-arrow-right"></i>Link to Pig Hunting Symbols Etc Quiz</button>
 </div>
 
-<div class="content">
-    <div class="description">
-        <p>This page is about Pig Hunting by Anna Woods. Study guide, quizzes, and the story.</p>
+<main>
+    <h2>Read the Story</h2>
+    <div class="pdf-container">
+        <iframe src="https://www.waikato.ac.nz/assets/Uploads/About-us/Faculties-and-schools/School-of-Arts/Sargeson-Prize/Open-Division-first-prize-Pig-Hunting-by-Anna-Woods-FINAL.pdf" 
+                title="Pig Hunting by Anna Woods"></iframe>
     </div>
-
-    <h2>Step by Step Guide on How to Study</h2>
-    <ol class="steps">
-        <li><i class="fas fa-check-circle"></i>Read the story.</li>
-        <li><i class="fas fa-check-circle"></i>Write a summary. Get AI to mark your summary.</li>
-        <li><i class="fas fa-check-circle"></i>Do the quizzes.</li>
-        <li><i class="fas fa-check-circle"></i>Fail? Repeat.</li>
-        <li><i class="fas fa-check-circle"></i>Repeat all steps.</li>
-    </ol>
-</div>
+</main>
 
 <footer>
     <p>&copy; 2024 Pig Hunting Study</p>

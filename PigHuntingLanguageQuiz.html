@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pig Hunting Story Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            display: none;
+            text-align: center;
+        }
+        .result-details {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Pig Hunting Story Quiz</h1>
+        <div class="quiz" id="quiz">
+            <div class="question" id="question"></div>
+            <ul class="options" id="options"></ul>
+            <button id="nextBtn">Next</button>
+        </div>
+        <div class="result" id="result">
+            <h2>Your Results</h2>
+            <p id="score"></p>
+            <div class="result-details" id="resultDetails"></div>
+            <button id="retryBtn">Retry</button>
+        </div>
+    </div>
+
+    <script>
+const quizData = [
+    // Language Features Identification
+    {
+        question: "What language feature is the following quote: 'the darkness spills out here, lying in wait for the sun'?",
+        options: ["Metaphor", "Personification", "Alliteration", "Simile"],
+        answer: 1
+    },
+    {
+        question: "What language feature is the following quote: 'the sound rang out across the gully, a loud crack like thunder in the hungry darkness'?",
+        options: ["Metaphor", "Onomatopoeia", "Simile", "Hyperbole"],
+        answer: 2
+    },
+    {
+        question: "What language feature is the following quote: 'tusks curved back on themselves like a dropped segment of moon'?",
+        options: ["Metaphor", "Simile", "Alliteration", "Personification"],
+        answer: 1
+    },
+    {
+        question: "What language feature is the following quote: 'Bo’s never-found kiwi, the screams of the children, over Polly’s frantic bark, through the heart of the night'?",
+        options: ["Imagery", "Personification", "Hyperbole", "Onomatopoeia"],
+        answer: 0
+    },
+    {
+        question: "What language feature is the following quote: 'storms that blow from the east, indigo swathes pushing up from the ocean'?",
+        options: ["Personification", "Alliteration", "Metaphor", "Hyperbole"],
+        answer: 0
+    },
+    {
+        question: "What language feature is the following quote: 'glow-worms, with their constellations that seem like light but are darkness'?",
+        options: ["Metaphor", "Irony", "Personification", "Alliteration"],
+        answer: 1
+    },
+    {
+        question: "What language feature is the following quote: 'I slammed my book shut and went to bed'?",
+        options: ["Onomatopoeia", "Metaphor", "Personification", "Simile"],
+        answer: 0
+    },
+    {
+        question: "What language feature is the following quote: 'I’ve done all this, but boar hunting seems barbaric to me.'?",
+        options: ["Irony", "Hyperbole", "Alliteration", "Metaphor"],
+        answer: 2
+    },
+    {
+        question: "What language feature is the following quote: 'vampire wasps preying on tunnel-web spiders, paralysing them and dragging their comatose bodies'?",
+        options: ["Simile", "Alliteration", "Personification", "Imagery"],
+        answer: 3
+    },
+    {
+        question: "What language feature is the following quote: 'the creamy light had clarified into a hard autumn morning'?",
+        options: ["Metaphor", "Personification", "Alliteration", "Imagery"],
+        answer: 1
+    },
+    {
+        question: "What language feature is the following quote: 'the house would be colder still for our absence; the empty inside of a turned-off fridge'?",
+        options: ["Simile", "Metaphor", "Irony", "Imagery"],
+        answer: 3
+    },
+    {
+        question: "What language feature is the following quote: 'the sky, cerulean and flawless, all the way to the ocean, held close by the jagged profile of Whangārei Heads'?",
+        options: ["Metaphor", "Personification", "Imagery", "Simile"],
+        answer: 2
+    },
+    {
+        question: "What language feature is the following quote: 'days when the sun, bright and spiky, sends whomping creaks through the metal'?",
+        options: ["Alliteration", "Onomatopoeia", "Simile", "Metaphor"],
+        answer: 1
+    },
+    {
+        question: "What language feature is the following quote: 'the blur of puriri moths tapping their wings against the glass at night'?",
+        options: ["Alliteration", "Imagery", "Personification", "Onomatopoeia"],
+        answer: 3
+    },
+    {
+        question: "What language feature is the following quote: 'a thick cotton I picked up on clearance that made the room colder still, jagged seams coming away like loose teeth'?",
+        options: ["Metaphor", "Simile", "Irony", "Personification"],
+        answer: 1
+    },
+    {
+        question: "What language feature is the following quote: 'the ruru’s call echoed through the heart of the night'?",
+        options: ["Onomatopoeia", "Alliteration", "Metaphor", "Personification"],
+        answer: 3
+    }
+];
+
+
+
+        // Shuffle function to randomize questions or options
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Shuffle quiz data on page load
+        shuffle(quizData);
+
+        // Shuffle options for each question
+        quizData.forEach(question => {
+            const correctAnswer = question.options[question.answer];
+            shuffle(question.options);
+            question.answer = question.options.indexOf(correctAnswer); // Update the answer index after shuffling
+        });
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const userAnswers = [];
+
+        function loadQuestion() {
+            const currentQuestion = quizData[currentQuestionIndex];
+            document.getElementById('question').innerText = `Question ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+            const optionsList = document.getElementById('options');
+            optionsList.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                optionsList.innerHTML += `<li><input type="radio" name="option" value="${index}">${option}</li>`;
+            });
+        }
+
+        function showResult() {
+            document.getElementById('quiz').style.display = 'none';
+            const percentage = (score / quizData.length) * 100;
+            document.getElementById('score').innerText = `You scored ${score} out of ${quizData.length} (${percentage.toFixed(2)}%)`;
+
+            const resultDetails = document.getElementById('resultDetails');
+            resultDetails.innerHTML = ''; // Clear previous results
+            quizData.forEach((question, index) => {
+                const isCorrect = userAnswers[index] === question.answer;
+                const resultClass = isCorrect ? "correct" : "incorrect";
+                resultDetails.innerHTML += `<p>${index + 1}. ${question.question}<br>
+                    <span class="${resultClass}">Your answer: ${question.options[userAnswers[index]]} - ${isCorrect ? "Correct" : "Wrong"}</span><br>
+                    Correct answer: ${question.options[question.answer]}</p>`;
+            });
+
+            document.getElementById('result').style.display = 'block';
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption) {
+                const answer = parseInt(selectedOption.value);
+                userAnswers.push(answer);
+                if (answer === quizData[currentQuestionIndex].answer) {
+                    score++;
+                }
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizData.length) {
+                    loadQuestion();
+                } else {
+                    showResult();
+                }
+            } else {
+                alert('Please select an option!');
+            }
+        });
+
+        document.getElementById('retryBtn').addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers.length = 0; // Clear previous answers
+            shuffle(quizData); // Shuffle the questions again for retry
+            quizData.forEach(question => {
+                const correctAnswer = question.options[question.answer];
+                shuffle(question.options);
+                question.answer = question.options.indexOf(correctAnswer); // Update the answer index after shuffling
+            });
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            loadQuestion();
+        });
+
+        loadQuestion();
+    </script>
+</body>
+</html>
